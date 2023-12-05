@@ -1,0 +1,47 @@
+{
+  "name": "menubarmaid",
+  "productName": "Menu Barmaid",
+  "version": "1.0.0",
+  "description": "open stuff right from the menu bar",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sebfried/menubarmaid.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sebfried/menubarmaid/issues"
+  },
+  "author": "Sebastian W. Friedrich",
+  "license": "EUPL-1.2",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "dependencies": {
+    "menubar": "^9.4.0"
+  },
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": ["dmg"]
+    }
+  },
+  "keywords": [
+    "menu bar",
+    "macOS",
+    "utilities",
+    "productivity",
+    "launcher",
+    "shortcut",
+    "task automation",
+    "electron",
+    "desktop app"
+  ],
+  "engines": {
+    "node": "^18.19.0"
+  }
+}
