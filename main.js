@@ -10,11 +10,24 @@ const iconPath = path.join(__dirname, 'assets', 'IconEnergyTemplate.png');
 app.on('ready', () => {
     const tray = new Tray(iconPath);
     const contextMenu = Menu.buildFromTemplate([
-        { label: 'Open Visual Studio Code', click: openVSCodeNewWindow },
-        { label: 'Open Firefox', click: () => exec('open -n -a "Firefox"') },
-        { label: 'Open Home Directory', click: openFinderAtHome },
+        {
+            label: 'Open Browser',
+            submenu: [
+                { label: 'Firefox', accelerator: 'Command+F', click: () => exec('open -n -a "Firefox"') },
+                { label: 'Librewolf', accelerator: 'Command+L', click: () => exec('open -n -a "Librewolf"') },
+                { label: 'Brave Browser', accelerator: 'Command+R', click: () => exec('open -n -a "Brave Browser"') },
+                { label: 'Google Chrome', accelerator: 'Command+G', click: () => exec('open -n -a "Google Chrome"') },
+                { label: 'Microsoft Edge', accelerator: 'Command+M', click: () => exec('open -n -a "Microsoft Edge"') }
+            ]
+        },
+        { label: 'Open Visual Studio Code', accelerator: 'Command+V', click: openVSCodeNewWindow },
+        { label: 'Open Home Directory', accelerator: 'Command+H', click: openFinderAtHome },
         { type: 'separator' },
-        { label: 'Quit', role: 'quit' }
+        { 
+            label: '⏻ Quit',
+            accelerator: 'Command+Q',
+            role: 'quit' 
+          }          
     ]);
     tray.setContextMenu(contextMenu);
 
