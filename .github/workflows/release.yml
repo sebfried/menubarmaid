@@ -34,23 +34,10 @@ jobs:
       id: package_version
       run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create and Upload Release
+      uses: ncipollo/release-action@v1
       with:
-        tag_name: ${{ env.VERSION }}
-        release_name: Release ${{ env.VERSION }}
-        draft: false
-        prerelease: true
-
-    - name: Upload DMG to Release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: "./dist/Menu Barmaid-${{ env.VERSION }}.dmg"
-        asset_name: Menu-Barmaid-${{ env.VERSION }}.dmg
-        asset_content_type: application/x-dmg
+        artifacts: "./dist/Menu Barmaid-${{ env.VERSION }}.dmg"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ env.VERSION }}
+        name: Release ${{ env.VERSION }}
