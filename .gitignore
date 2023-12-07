@@ -3,8 +3,9 @@
 .AppleDouble
 .LSOverride
 
-# Node modules
+# Node.js specific
 node_modules/
+package-lock.json
 
 # Electron build output - ignore everything except dmg and zip in dist
 /dist/*
@@ -13,3 +14,4 @@ node_modules/
 
 # Visual Studio Code specific
 .vscode/
+*.code-workspace

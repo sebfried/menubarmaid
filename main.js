@@ -2,8 +2,11 @@ const { app, Menu, Tray, shell, BrowserWindow } = require('electron');
 const path = require('path');
 const { exec } = require('child_process');
 const os = require('os');
-
 const { menubar } = require('menubar');
+const Store = require('electron-store');
+
+// Initialize electron-store
+const store = new Store();
 
 const iconPath = path.join(__dirname, 'assets', 'IconEnergyTemplate.png');
 
@@ -48,13 +51,18 @@ let settingsWindow = null;
 
 function openSettingsWindow() {
     if (!settingsWindow) {
-        // Create a new settings window if it doesn't exist
+        const savedBounds = store.get('settingsWindowBounds', {
+            width: 800,
+            height: 600,
+            x: undefined,
+            y: undefined
+        });
+
         settingsWindow = new BrowserWindow({
+            ...savedBounds,
             frame: false,
             titleBarStyle: 'hidden',
             show: false,
-            minWidth: 800,
-            minHeight: 600,
             fullscreenable: false,
             resizable: true,
             webPreferences: {
@@ -65,20 +73,27 @@ function openSettingsWindow() {
 
         settingsWindow.loadFile('views/settings.html');
         settingsWindow.once('ready-to-show', () => {
-            // Show the settings window after it's fully loaded
             setTimeout(() => {
                 settingsWindow.show();
-            }, 240); // Avoid render flash
+            }, 240);
+        });
 
-            // Set up event handler
-            settingsWindow.on('closed', () => {
-                // Reset the settingsWindow reference when it's closed
-                settingsWindow = null;
-            });
+        settingsWindow.on('close', () => {
+            // Save the current window position before the window is closed
+            if (!settingsWindow.isDestroyed()) {
+                store.set('settingsWindowBounds', settingsWindow.getBounds());
+            }
+        });
+
+        settingsWindow.on('closed', () => {
+            // Reset the settingsWindow reference when it's closed
+            settingsWindow = null;
         });
     } else {
         // Re-show the existing settings window if it already exists
-        settingsWindow.show();
+        if (!settingsWindow.isDestroyed()) {
+            settingsWindow.show();
+        }
     }
 }
 
