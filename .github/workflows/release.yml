@@ -1,0 +1,54 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'package.json'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Read Node.js version from package.json
+      id: node_version
+      run: echo "::set-output name=NODE_VERSION::$(node -p "require('./package.json').engines.node")"
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
+
+    - name: Install Dependencies
+      run: npm install --verbose
+
+    - name: Build Electron App
+      run: npm run build --verbose
+
+    - name: Get Version from package.json
+      id: package_version
+      run: echo "::set-output name=VERSION::$(node -p "require('./package.json').version")"
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.package_version.outputs.VERSION }}
+        release_name: Release ${{ steps.package_version.outputs.VERSION }}
+        draft: false
+        prerelease: true
+
+    - name: Upload DMG to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: "./dist/Menu Barmaid-${{ steps.package_version.outputs.VERSION }}.dmg"
+        asset_name: Menu-Barmaid-${{ steps.package_version.outputs.VERSION }}.dmg
+        asset_content_type: application/x-dmg

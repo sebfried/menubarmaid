@@ -1,7 +1,7 @@
 {
   "name": "menubarmaid",
   "productName": "Menu Barmaid",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "open stuff right from the menu bar",
   "main": "main.js",
   "repository": {

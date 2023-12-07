@@ -7,10 +7,8 @@
 node_modules/
 package-lock.json
 
-# Electron build output - ignore everything except dmg and zip in dist
-/dist/*
-!/dist/*.dmg
-!/dist/*.zip
+# Electron build output
+dist/
 
 # Visual Studio Code specific
 .vscode/
