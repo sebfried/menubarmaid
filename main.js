@@ -52,14 +52,18 @@ let settingsWindow = null;
 function openSettingsWindow() {
     if (!settingsWindow) {
         const savedBounds = store.get('settingsWindowBounds', {
-            width: 800,
-            height: 600,
+            width: 670,
+            height: 670,
             x: undefined,
             y: undefined
         });
 
         settingsWindow = new BrowserWindow({
             ...savedBounds,
+            minWidth: 570,
+            minHeight: 570,
+            maxWidth: 770,
+            maxHeight: 770,
             frame: false,
             titleBarStyle: 'hidden',
             show: false,
